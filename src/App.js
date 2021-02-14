@@ -15,7 +15,7 @@ function App() {
   const [tagList, setTagList] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [tagsNotes, setTagsNotes] = useState([]);
-  const pfad = "https://simian.sytes.net";
+  const pfad = "http://ec2-3-249-53-237.eu-west-1.compute.amazonaws.com/";
   const [load, setLoad] = useState(false);
  /*  const { isLoading } = useAuth0(); */
  
@@ -23,7 +23,6 @@ function App() {
 
   const getNotes = () => {
     fetch(pfad + ':3001')
-    //fetch('http://192.168.1.99:3001')
       .then(response => {
         return response.json();
       })

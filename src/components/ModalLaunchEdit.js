@@ -116,6 +116,15 @@ function ModalLaunchEdit({ tags, setFilteredItems, getNotes, item, pfad }) {
           body: JSON.stringify({ filename, noteid }),
         })
       })
+      .then(res => {
+        fetch(pfad + ':3001/upload_ipfs/file', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ filename, noteid }),
+        })
+      })
       .catch(err => { // then print response status
         toast.error('upload fail')
       })
