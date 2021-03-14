@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://oshiba2207.github.io/zettelkasten",
+  "homepage": "https://oshiba2207.github.io/",
   "dependencies": {
     "@auth0/auth0-react": "^1.2.0",
     "@chakra-ui/core": "^1.0.0-rc.8",

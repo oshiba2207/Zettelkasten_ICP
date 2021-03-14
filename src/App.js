@@ -15,7 +15,7 @@ function App() {
   const [tagList, setTagList] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [tagsNotes, setTagsNotes] = useState([]);
-  const pfad = "http://ec2-3-249-53-237.eu-west-1.compute.amazonaws.com/";
+  const pfad = "https://ec2-3-249-53-237.eu-west-1.compute.amazonaws.com/";
   const [load, setLoad] = useState(false);
  /*  const { isLoading } = useAuth0(); */
  
