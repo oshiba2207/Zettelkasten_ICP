@@ -3,9 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import OwnNavbar from './components/OwnNavbar.js';
 import './App.css';
 import NoteGrid from './components/NoteGrid';
-/* import LoginButton from './components/LoginButton';
-import LogoutButton from './components/LoginButton';
-import { useAuth0 } from '@auth0/auth0-react'; */
+import LoginButton from './components/LoginButton';
+import LogoutButton from './components/LogoutButton';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 function App() {
@@ -15,14 +15,20 @@ function App() {
   const [tagList, setTagList] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [tagsNotes, setTagsNotes] = useState([]);
-  const pfad = "https://ec2-3-249-53-237.eu-west-1.compute.amazonaws.com/";
-  const [load, setLoad] = useState(false);
- /*  const { isLoading } = useAuth0(); */
- 
-  
+  const [appUser, setAppUser] = useState('');
+ const pfad = "https://www.simian.link";
+ const [load, setLoad] = useState(false);
+/*  const { isLoading } = useAuth0(); */
+const { isAuthenticated } = useAuth0();
+
+
 
   const getNotes = () => {
-    fetch(pfad + ':3001')
+    fetch(pfad + ':3001', {
+      method: 'POST',
+      body: JSON.stringify({appUser}),
+      headers: {'Content-Type': 'application/json'}
+    })
       .then(response => {
         return response.json();
       })
@@ -32,11 +38,7 @@ function App() {
         setFilteredItems(itemsGroupedByNoteID);  
         setItems(itemsGroupedByNoteID); 
       })
-  } 
-
-
-  
-  //Group item-Array
+  }
 
   const groupItemsByID = (data, noteid) => {
     const unique = data.map(e => e[noteid])
@@ -44,10 +46,14 @@ function App() {
       .filter((e) => data[e]).map(e=> data[e]);
     return unique;
   };
+
   useEffect(() => {
     function getTags() {
-      fetch(pfad + ':3001/tags')
-      //fetch('http://192.198.1.99:3001/tags')
+      fetch(pfad + ':3001/tags', {
+        method: 'POST',
+        body: JSON.stringify({ appUser }),
+        headers: { 'Content-Type': 'application/json' }
+      })
         .then(response => {
           return response.json();
         })
@@ -56,22 +62,15 @@ function App() {
         });
     }
     getTags();
-  }, [tagList]);
+  }, [appUser]);
 
-  /* if (isLoading) return <div>Loading...</div> */
 
   return (
     <div className="App">
-     {/*  <LoginButton /> */}
-     
-      <OwnNavbar pfad={pfad} load={load} setLoad={setLoad} tags={tags} filteredItems={filteredItems} reloadItems={getNotes} items={items} setFilteredItems={setFilteredItems} getNotes={getNotes} hashtags={tagsNotes}/>
-      <div>
-        {/* {(load) ? (  */}
-        <NoteGrid pfad={pfad} className="NoteGrid" getNotes={getNotes} items={filteredItems} setFilteredItems={setFilteredItems} hashtags={tagsNotes} tags={tags}/>
-     {/*    ) : (<h1>nothing to see</h1>
-          )
-        } */}
-        </div>
+      <LoginButton setAppUser={setAppUser}/>
+      <LogoutButton />  
+      <OwnNavbar appUser={appUser} pfad={pfad} load={load} setLoad={setLoad} tags={tags} filteredItems={filteredItems} reloadItems={getNotes} items={items} setFilteredItems={setFilteredItems} getNotes={getNotes} hashtags={tagsNotes}/>
+      <NoteGrid pfad={pfad} className="NoteGrid" getNotes={getNotes} items={filteredItems} setFilteredItems={setFilteredItems} hashtags={tagsNotes} tags={tags}/>
     </div>
   );
 }

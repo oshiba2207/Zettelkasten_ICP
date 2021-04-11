@@ -12,12 +12,9 @@ const Note = ({ item, hashtags, tags, getNotes, setFilteredItems, filterByTagNot
   /*   const formatedDate = Moment(item.notecreated).format('DD-MM-YYYY'); */
     const [noteid, setNoteid] = useState(item.noteid);
     const noteHashTags = [...hashtags];
-    //const [imgSource, setImgSource] = useState(pfad + "/zettelkasten/uploads/" + item.fileurl);
-    const [imgSource, setImgSource] = useState("https://oshiba2207-team-bucket.storage.fleek.co/" + item.ipfshash);
-    //const [imgSource, setImgSource] = useState("http://simian.sytes.net/zettelkasten/files/zettelkasten/uploads/" + item.fileurl);
-  /*   if (imgSource == 'http://simian.sytes.net/zettelkasten/uploads/null'){
-        setImgSource('http://simian.sytes.net:3001/zettelkasten/uploads/canvas2.png');
-    }  */
+    //const [imgSource, setImgSource] = useState("https://oshiba2207-team-bucket.storage.fleek.co/" + item.ipfshash);
+    const [imgSource, setImgSource] = useState("https://storageapi.fleek.co/oshiba2207-team-bucket/" + item.ipfshash);
+    
     const relHashtags = noteHashTags.filter(hashs => hashs.noteid === item.noteid);
     const deleteHandle = (e) => {
         deleteNote(noteid);

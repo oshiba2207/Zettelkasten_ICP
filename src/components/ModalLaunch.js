@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 
-function ModalLaunch({ tags, setFilteredItems, getNotes, pfad }) {
+function ModalLaunch({ tags, setFilteredItems, getNotes, pfad, appUser }) {
   const [tagList, setTagList] = useState(tags);
   const [show, setShow] = useState(false);
   const [noteName, setNoteName] = useState("");
@@ -30,7 +30,7 @@ function ModalLaunch({ tags, setFilteredItems, getNotes, pfad }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ noteName, noteText, tag }),
+      body: JSON.stringify({ noteName, noteText, tag, appUser }),
     })
       .then(response => {
         getNotes();

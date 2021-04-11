@@ -7,10 +7,10 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import ModalLaunch from './ModalLaunch';
 import Modal from 'react-bootstrap/Modal';
-/* import { useAuth0 } from "@auth0/auth0-react"; */
+import { useAuth0 } from "@auth0/auth0-react"; 
 
 
-const OwnNavbar = ({ tags, getNotes, load, setLoad, items, setFilteredItems, hashtags, pfad}) => {
+const OwnNavbar = ({ tags, getNotes, load, setLoad, items, setFilteredItems, hashtags, pfad, appUser}) => {
   const [searchInput, setSearchInput] = useState("");
   const [showNewTag, setShowNewTag] = useState(false);
   const [neuesTag, setNeuesTag] = useState("");
@@ -18,16 +18,16 @@ const OwnNavbar = ({ tags, getNotes, load, setLoad, items, setFilteredItems, has
   const [tagFilter, setTagFilter] = useState("");
   const handleModal2Close = () => setShowNewTag(false);
   const handleModal2Show = () => setShowNewTag(true);
-/*   const { user, isAuthenticated } = useAuth0(); */
+  const { user, isAuthenticated } = useAuth0();
 
   const loadHandler = () => {
     setLoad(!load);
     console.log(load);
   }
 
-  useEffect(() => {
-    getNotes();
-  }, []);
+ useEffect(() => {
+    getNotes(user);
+  }, [appUser]); 
 
   React.useEffect(() => {
     setTagList(tags)
@@ -68,10 +68,11 @@ const OwnNavbar = ({ tags, getNotes, load, setLoad, items, setFilteredItems, has
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ neuesTag }),
+      body: JSON.stringify({ neuesTag, appUser }),
     })
       .then(response => {
         return response.text()
+        //setTagList(response)
       })
       .then(response => {
         fetch(pfad + ':3001/tags')
@@ -85,13 +86,13 @@ const OwnNavbar = ({ tags, getNotes, load, setLoad, items, setFilteredItems, has
   }
 
     return(
-    /*   isAuthenticated && (  */
+       isAuthenticated && ( 
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="#home">Zettelkasten</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-            <ModalLaunch tags={tags} setFilteredItems={setFilteredItems} getNotes={getNotes} pfad={pfad}/>
+            <ModalLaunch appUser={appUser} tags={tags} setFilteredItems={setFilteredItems} getNotes={getNotes} pfad={pfad}/>
               <NavDropdown title="Tags" id="basic-nav-dropdown">
               {tagList.map(tag => (
                 <NavDropdown.Item key={tag.tagid} value={tag.tagid} onClick={dropdownFilterHandler}>#{tag.tagname}</NavDropdown.Item>
@@ -123,7 +124,7 @@ const OwnNavbar = ({ tags, getNotes, load, setLoad, items, setFilteredItems, has
             </Form>
             </Navbar.Collapse>
         </Navbar>
-    /*   )     */      
+     )     
     )
 }
 
